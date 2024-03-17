@@ -28,6 +28,13 @@
 
 
 
+<button id="size800x600">800x600</button>
+<button id="size1024x768">1024x768</button>
+<button id="customSize">حجم مخصص</button>
+<input type="number" id="customWidth" placeholder="عرض"/>
+<input type="number" id="customHeight" placeholder="ارتفاع"/>
+
+
 
 <button id="addText">إضافة نص</button>
 <button id="undo">تراجع</button>
@@ -56,7 +63,7 @@
 
 
 
-    <canvas id="imageCanvas" width="800" height="600"></canvas>
+    <canvas id="imageCanvas" width="300" height="200"></canvas>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     <script>
@@ -259,6 +266,29 @@ document.getElementById('imageLoader').addEventListener('change', function (e) {
     }
 });
 
+document.getElementById('size800x600').addEventListener('click', function() {
+    canvas.setWidth(800);
+    canvas.setHeight(600);
+    canvas.renderAll();
+});
+
+document.getElementById('size1024x768').addEventListener('click', function() {
+    canvas.setWidth(1024);
+    canvas.setHeight(768);
+    canvas.renderAll();
+});
+
+document.getElementById('customSize').addEventListener('click', function() {
+    var width = document.getElementById('customWidth').value;
+    var height = document.getElementById('customHeight').value;
+    if (width > 0 && height > 0) {
+        canvas.setWidth(width);
+        canvas.setHeight(height);
+        canvas.renderAll();
+    } else {
+        alert('الرجاء إدخال قيم صحيحة للعرض والارتفاع.');
+    }
+});
 
 
 
