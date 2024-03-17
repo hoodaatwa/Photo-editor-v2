@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+
+
+
+
+    <title>محرر الصور</title>
+    <style>
+        canvas {
+            border: 1px solid #cccccc;
+        }
+    </style>
+</head>
+<body>
+    <h2>محرر الصور بسيط</h2>
+    <input type="file" id="imageLoader" name="imageLoader"/>
+
+
+
+
+<button id="addText">إضافة نص</button>
+<button id="undo">تراجع</button>
+<button id="redo">إعادة</button>
+<button id="saturation">زيادة التشبع</button>
+
+<button id="grayscale">الأبيض والأسود</button>
+<button id="brightness">زيادة السطوع</button>
+<button id="contrast">زيادة التباين</button>
+<button id="blur">ضبابية</button>
+
+
+
+<button id="resize">تغيير حجم الصورة</button>
+
+
+
+
+
+
+
+
+
+    <canvas id="imageCanvas" width="800" height="600"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
+    <script>
+var canvas = new fabric.Canvas('imageCanvas');
+document.getElementById('imageLoader').addEventListener('change', function (e) {
+    var reader = new FileReader();
+    reader.onload = function (event) {
+        var imgObj = new Image();
+        imgObj.src = event.target.result;
+        imgObj.onload = function () {
+            var image = new fabric.Image(imgObj);
+            image.set({
+                angle: 0,
+                padding: 10,
+                cornersize: 10,
+                height: imgObj.height,
+                width: imgObj.width,
+            });
+            canvas.clear();
+            canvas.add(image);
+            canvas.setActiveObject(image);
+        }
+    }
+    reader.readAsDataURL(e.target.files[0]);
+});
+
+// Enable drawing
+var drawingModeEl = document.createElement('button');
+drawingModeEl.textContent = 'Toggle Drawing Mode';
+drawingModeEl.onclick = function() {
+    canvas.isDrawingMode = !canvas.isDrawingMode;
+    if (canvas.isDrawingMode) {
+        drawingModeEl.textContent = 'Cancel Drawing Mode';
+    } else {
+        drawingModeEl.textContent = 'Toggle Drawing Mode';
+    }
+};
+document.body.appendChild(drawingModeEl);
+
+
+// تطبيق الأبيض والأسود
+document.getElementById('grayscale').addEventListener('click', function() {
+    var obj = canvas.getActiveObject();
+    if (!obj) return alert('الرجاء اختيار صورة');
+    obj.filters.push(new fabric.Image.filters.Grayscale());
+    obj.applyFilters();
+    canvas.renderAll();
+});
+
+// زيادة السطوع
+document.getElementById('brightness').addEventListener('click', function() {
+    var obj = canvas.getActiveObject();
+    if (!obj) return alert('الرجاء اختيار صورة');
+    var filter = new fabric.Image.filters.Brightness({
+        brightness: 0.05 // قيمة زيادة السطوع، قد تحتاج لتعديلها
+    });
+    obj.filters.push(filter);
+    obj.applyFilters();
+    canvas.renderAll();
+});
+
+// زيادة التباين
+document.getElementById('contrast').addEventListener('click', function() {
+    var obj = canvas.getActiveObject();
+    if (!obj) return alert('الرجاء اختيار صورة');
+    var filter = new fabric.Image.filters.Contrast({
+        contrast: 10 // قيمة زيادة التباين، قد تحتاج لتعديلها
+    });
+    obj.filters.push(filter);
+    obj.applyFilters();
+    canvas.renderAll();
+});
+
+let state = [];
+let mods = 0;
+
+function updateState() {
+    // Save the current state
+    state.push(JSON.stringify(canvas));
+}
+
+canvas.on('object:modified', function() {
+    updateState();
+    mods = 0;
+});
+
+document.getElementById('addText').addEventListener('click', function() {
+    var text = new fabric.IText('اكتب هنا...', { left: 100, top: 100 });
+    canvas.add(text);
+    updateState();
+});
+
+document.getElementById('undo').addEventListener('click', function() {
+    if (mods < state.length) {
+        canvas.clear().renderAll();
+        canvas.loadFromJSON(state[state.length - 1 - mods - 1]);
+        canvas.renderAll();
+        mods += 1;
+    }
+});
+
+document.getElementById('redo').addEventListener('click', function() {
+    if (mods > 0) {
+        canvas.clear().renderAll();
+        canvas.loadFromJSON(state[state.length - 1 - mods + 1]);
+        canvas.renderAll();
+        mods -= 1;
+    }
+});
+
+document.getElementById('saturation').addEventListener('click', function() {
+    var obj = canvas.getActiveObject();
+    if (!obj) return alert('الرجاء اختيار صورة');
+    var filter = new fabric.Image.filters.Saturation({
+        saturation: 0.3 // زيادة التشبع، قد تحتاج لتعديلها
+    });
+    obj.filters.push(filter);
+    obj.applyFilters();
+    canvas.renderAll();
+});
+
+updateState();
+
+
+document.getElementById('resize').addEventListener('click', function() {
+    var obj = canvas.getActiveObject();
+    if (!obj) return alert('الرجاء اختيار صورة');
+    // تغيير حجم إلى 50% من الحجم الأصلي كمثال
+    obj.scaleX /= 2;
+    obj.scaleY /= 2;
+    obj.setCoords();
+    canvas.renderAll();
+    updateState();
+});
+
+
+document.getElementById('blur').addEventListener('click', function() {
+    var obj = canvas.getActiveObject();
+    if (!obj) return alert('الرجاء اختيار صورة');
+    var filter = new fabric.Image.filters.Blur({
+        blur: 0.5 // قيمة الضبابية، قد تحتاج لتعديلها
+    });
+    obj.filters.push(filter);
+    obj.applyFilters();
+    canvas.renderAll();
+});
+
+
+
+
+
+// تأكد من استدعاء هذا بعد تحميل OpenCV.js بنجاح
+function onOpenCvReady() {
+    cv['onRuntimeInitialized']=()=>{
+        console.log("OpenCV ready");
+    }
+}
+
+function applyMagicBrush(imageSrc, x, y) {
+    let src = cv.imread(imageSrc);
+    let dst = new cv.Mat();
+    let mask = new cv.Mat();
+    // نقطة البداية بناءً على حدث النقر
+    let seedPoint = new cv.Point(x, y);
+
+    // يمكن تعديل هذه القيم لتحديد "حساسية" الفرشاة
+    let loDiff = new cv.Scalar(30, 30, 30, 30);
+    let upDiff = new cv.Scalar(30, 30, 30, 30);
+    let rect = new cv.Rect();
+
+    // تطبيق floodFill لمحاكاة الفرشاة السحرية
+    cv.floodFill(src, mask, seedPoint, [255, 0, 0, 255], rect, loDiff, upDiff, cv.FLOODFILL_FIXED_RANGE);
+
+    cv.imshow('canvasOutput', src);
+    src.delete(); dst.delete(); mask.delete();
+}
+
+
+
+
+</script>
+</body>
+</html>
