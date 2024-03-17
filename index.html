@@ -10,9 +10,6 @@
     }
 </style>
 
-
-
-
     
     <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
@@ -47,17 +44,15 @@
 <button id="resize">تغيير حجم الصورة</button>
 
 <button id="exportImage">تصدير الصورة</button>
+
+<button id="cropImage">قص الصورة</button>
+
 <div id="imageContainer" style="width: 100%; max-height: 400px; margin: auto; overflow: hidden;">
     
 <img id="image" style="display: none;"/>
 
 
 </div>
-
-
-
-
-
 
 
 
@@ -210,9 +205,6 @@ document.getElementById('blur').addEventListener('click', function() {
 });
 
 
-
-
-
 document.getElementById('exportImage').addEventListener('click', function() {
     var imageData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     var link = document.createElement('a');
@@ -268,6 +260,37 @@ document.getElementById('imageLoader').addEventListener('change', function (e) {
 });
 
 
+
+
+document.getElementById('cropImage').addEventListener('click', function() {
+    if (!cropper) {
+        alert('الرجاء تحميل صورة أولاً.');
+        return;
+    }
+    // الحصول على الصورة المقصوصة كـ Blob
+    cropper.getCroppedCanvas().toBlob(function(blob) {
+        var reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = function() {
+            var base64data = reader.result;
+            var imgObj = new Image();
+            imgObj.src = base64data;
+            imgObj.onload = function() {
+                var image = new fabric.Image(imgObj);
+                image.set({
+                    angle: 0,
+                    padding: 10,
+                    cornersize: 10,
+                    height: imgObj.height,
+                    width: imgObj.width,
+                });
+                canvas.clear();
+                canvas.add(image);
+                canvas.setActiveObject(image);
+            }
+        };
+    });
+});
 
 
 </script>
