@@ -2,9 +2,20 @@
 <html>
 <head>
 
+<style>
+    #image {
+        max-width: 100%; /* تعديل حسب الحاجة */
+        max-height: 200px; /* تعديل حسب الحاجة */
+        display: block; /* يمكنك تعديل هذا لتناسب تخطيطك */
+    }
+</style>
 
 
 
+
+    
+    <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
 
     <title>محرر الصور</title>
@@ -36,6 +47,10 @@
 <button id="resize">تغيير حجم الصورة</button>
 
 <button id="exportImage">تصدير الصورة</button>
+
+<img id="image" style="display: none;"/>
+
+
 
 
 
@@ -208,6 +223,47 @@ document.getElementById('exportImage').addEventListener('click', function() {
 
 
 
+var cropper;
+document.getElementById('imageLoader').addEventListener('change', function (e) {
+    var files = e.target.files;
+    var done = function (url) {
+        document.getElementById('image').src = url;
+        document.getElementById('image').style.display = 'block';
+        if (cropper) {
+            cropper.destroy();
+        }
+        cropper = new Cropper(document.getElementById('image'), {
+            viewMode: 1,
+            autoCropArea: 1,
+            movable: false,
+            rotatable: false,
+            scalable: false,
+            zoomable: true,
+            autoCrop: true,
+            autoCropArea: 1,
+            resizable: false,
+            crop: function(event) {
+                // Handle the crop event here
+            }
+        });
+    };
+    var reader;
+    var file;
+    var url;
+
+    if (files && files.length > 0) {
+        file = files[0];
+        if (URL) {
+            done(URL.createObjectURL(file));
+        } else if (FileReader) {
+            reader = new FileReader();
+            reader.onload = function (e) {
+                done(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+});
 
 
 
