@@ -35,6 +35,7 @@
 
 <button id="resize">تغيير حجم الصورة</button>
 
+<button id="exportImage">تصدير الصورة</button>
 
 
 
@@ -195,31 +196,18 @@ document.getElementById('blur').addEventListener('click', function() {
 
 
 
-// تأكد من استدعاء هذا بعد تحميل OpenCV.js بنجاح
-function onOpenCvReady() {
-    cv['onRuntimeInitialized']=()=>{
-        console.log("OpenCV ready");
-    }
-}
+document.getElementById('exportImage').addEventListener('click', function() {
+    var imageData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    var link = document.createElement('a');
+    link.download = "edited-image.png";
+    link.href = imageData;
+    link.click();
+});
 
-function applyMagicBrush(imageSrc, x, y) {
-    let src = cv.imread(imageSrc);
-    let dst = new cv.Mat();
-    let mask = new cv.Mat();
-    // نقطة البداية بناءً على حدث النقر
-    let seedPoint = new cv.Point(x, y);
 
-    // يمكن تعديل هذه القيم لتحديد "حساسية" الفرشاة
-    let loDiff = new cv.Scalar(30, 30, 30, 30);
-    let upDiff = new cv.Scalar(30, 30, 30, 30);
-    let rect = new cv.Rect();
 
-    // تطبيق floodFill لمحاكاة الفرشاة السحرية
-    cv.floodFill(src, mask, seedPoint, [255, 0, 0, 255], rect, loDiff, upDiff, cv.FLOODFILL_FIXED_RANGE);
 
-    cv.imshow('canvasOutput', src);
-    src.delete(); dst.delete(); mask.delete();
-}
+
 
 
 
