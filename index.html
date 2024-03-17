@@ -2,6 +2,9 @@
 <html>
 <head>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+
 <style>
     #image {
         max-width: 100%; /* تعديل حسب الحاجة */
@@ -35,8 +38,21 @@
 <input type="number" id="customHeight" placeholder="ارتفاع"/>
 
 
+<label for="fontFamily">Font Family:</label>
+<select id="fontFamily">
+    <!-- سيتم تعبئة هذه القائمة ديناميكياً -->
+</select>
 
-<button id="addText">إضافة نص</button>
+<label for="textColor">Text Color:</label>
+<input type="color" id="textColor" value="#000000">
+
+<label for="backgroundColor">Background Color:</label>
+<input type="color" id="backgroundColor" value="#ffffff">
+
+<button id="addText">أضف نص</button>
+
+
+
 <button id="undo">تراجع</button>
 <button id="redo">إعادة</button>
 <button id="saturation">زيادة التشبع</button>
@@ -193,11 +209,47 @@ canvas.on('object:modified', function() {
     mods = 0;
 });
 
+
+// تحميل الخطوط من Google Fonts
+const googleFontsApiKey = 'AIzaSyDtlPDPq48xcOYSGnS4bv3UKLWZk-YSSlg'; // استبدل بمفتاح API الخاص بك
+fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${googleFontsApiKey}`)
+    .then(response => response.json())
+    .then(data => {
+        const fontFamilySelect = document.getElementById('fontFamily');
+        data.items.forEach(font => {
+            const option = document.createElement('option');
+            option.value = font.family;
+            option.textContent = font.family;
+            fontFamilySelect.appendChild(option);
+        });
+    })
+    .catch(error => console.error('Error loading Google Fonts:', error));
+
 document.getElementById('addText').addEventListener('click', function() {
-    var text = new fabric.IText('اكتب هنا...', { left: 100, top: 100 });
-    canvas.add(text);
-    updateState();
+    var fontFamily = document.getElementById('fontFamily').value;
+    var textColor = document.getElementById('textColor').value;
+    var backgroundColor = document.getElementById('backgroundColor').value;
+
+    // استخدام WebFont لتحميل الخط المختار
+    WebFont.load({
+        google: {
+            families: [fontFamily]
+        },
+        active: function() {
+            // إضافة نص بالخط المحمل
+            var text = new fabric.IText('اكتب هنا...', {
+                left: 100,
+                top: 100,
+                fontFamily: fontFamily,
+                fill: textColor,
+                backgroundColor: backgroundColor
+            });
+            canvas.add(text);
+        }
+    });
 });
+
+
 
 document.getElementById('undo').addEventListener('click', function() {
     if (mods < state.length) {
