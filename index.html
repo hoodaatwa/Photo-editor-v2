@@ -52,6 +52,10 @@
 <button id="undo">تراجع</button>
 <button id="redo">إعادة</button>
 <button id="saturation">زيادة التشبع</button>
+<button id="applyVintage">Apply Vintage Filter</button>
+<button id="applyEmboss">Apply Emboss Filter</button>
+<button id="applySharpen">Apply Sharpen Filter</button>
+<button id="applyNoise">Apply Noise Filter</button>
 
 <button id="grayscale">الأبيض والأسود</button>
 <button id="brightness">زيادة السطوع</button>
@@ -70,15 +74,11 @@ Distance: <input type="range" id="distance" min="0" max="1" step="0.01" value="0
 Color: <input type="color" id="color" value="#FFFFFF">
 <button id="applyFilters">Apply Filters</button>
 
-
-
 <div id="imageContainer" style="width: 100%; max-height: 400px; margin: auto; overflow: hidden;">
     
 <img id="image" style="display: none;"/>
 
-
 </div>
-
 
     <canvas id="imageCanvas" width="300" height="200"></canvas>
 
@@ -108,7 +108,6 @@ document.getElementById('imageLoader').addEventListener('change', function (e) {
     reader.readAsDataURL(e.target.files[0]);
 });
 
-
 // Enable drawing
 var drawingModeEl = document.createElement('button');
 drawingModeEl.textContent = 'Toggle Drawing Mode';
@@ -121,9 +120,6 @@ drawingModeEl.onclick = function() {
     }
 };
 document.body.appendChild(drawingModeEl);
-
-
-
 
 document.addEventListener('DOMContentLoaded', function() {
     // إضافة التحكمات إلى الصفحة
@@ -150,7 +146,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
 });
-
 
 // تطبيق الأبيض والأسود
 document.getElementById('grayscale').addEventListener('click', function() {
@@ -197,7 +192,6 @@ canvas.on('object:modified', function() {
     updateState();
     mods = 0;
 });
-
 
 // تحميل الخطوط من Google Fonts
 const googleFontsApiKey = 'AIzaSyDtlPDPq48xcOYSGnS4bv3UKLWZk-YSSlg'; // استبدل بمفتاح API الخاص بك
@@ -283,7 +277,6 @@ document.getElementById('resize').addEventListener('click', function() {
     updateState();
 });
 
-
 document.getElementById('blur').addEventListener('click', function() {
     var obj = canvas.getActiveObject();
     if (!obj) return alert('الرجاء اختيار صورة');
@@ -295,7 +288,6 @@ document.getElementById('blur').addEventListener('click', function() {
     canvas.renderAll();
 });
 
-
 document.getElementById('exportImage').addEventListener('click', function() {
     var imageData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     var link = document.createElement('a');
@@ -303,7 +295,6 @@ document.getElementById('exportImage').addEventListener('click', function() {
     link.href = imageData;
     link.click();
 });
-
 
 var cropper;
 document.getElementById('imageLoader').addEventListener('change', function (e) {
@@ -371,7 +362,6 @@ document.getElementById('customSize').addEventListener('click', function() {
     }
 });
 
-
 document.getElementById('cropImage').addEventListener('click', function() {
     if (!cropper) {
         alert('الرجاء تحميل صورة أولاً.');
@@ -402,14 +392,11 @@ document.getElementById('cropImage').addEventListener('click', function() {
     });
 });
 
-
-
 canvas.on('mouse:down', function(options) {
     if (!options.target) {
         canvas.discardActiveObject().requestRenderAll();
     }
 });
-
 
 // زيادة حجم زوايا التحكم للتحديد والتدوير
 fabric.Object.prototype.cornerSize = 20; // حجم زوايا التحكم
@@ -488,8 +475,6 @@ fabric.Object.prototype.controls.clone = new fabric.Control({
   cornerSize: 24
 });
 
-
-
 document.getElementById('applyFilters').addEventListener('click', function() {
     var distanceValue = parseFloat(document.getElementById('distance').value);
     var colorValue = document.getElementById('color').value;
@@ -513,6 +498,77 @@ document.getElementById('applyFilters').addEventListener('click', function() {
     }
 });
 
+document.getElementById('applyVintage').addEventListener('click', function() {
+    var activeObject = canvas.getActiveObject();
+    if (activeObject && activeObject.type === 'image') {
+        // إعادة تعيين الفلاتر بإزالتها جميعًا لتجنب تراكم الفلاتر
+        activeObject.filters = [];
+
+        // إضافة فلتر Vintage
+        activeObject.filters.push(new fabric.Image.filters.Vintage());
+
+        // تطبيق الفلاتر وإعادة رسم الصورة
+        activeObject.applyFilters();
+        canvas.renderAll();
+    }
+});
+
+document.getElementById('applyEmboss').addEventListener('click', function() {
+    var activeObject = canvas.getActiveObject();
+    if (activeObject && activeObject.type === 'image') {
+        // إعادة تعيين الفلاتر بإزالتها جميعًا لتجنب تراكم الفلاتر
+        activeObject.filters = [];
+
+        // إضافة فلتر Emboss
+        activeObject.filters.push(new fabric.Image.filters.Convolute({
+            matrix: [ 1,  1,  1,
+                      1, 0.7, -1,
+                     -1, -1, -1 ]
+        }));
+
+        // تطبيق الفلاتر وإعادة رسم الصورة
+        activeObject.applyFilters();
+        canvas.renderAll();
+    }
+});
+
+document.getElementById('applySharpen').addEventListener('click', function() {
+    var activeObject = canvas.getActiveObject();
+    if (activeObject && activeObject.type === 'image') {
+        // إزالة جميع الفلاتر المطبقة مسبقاً لتجنب التأثير المتراكم
+        activeObject.filters = [];
+
+        // إضافة فلتر Sharpen
+        activeObject.filters.push(new fabric.Image.filters.Convolute({
+            matrix: [  0, -1,  0, 
+                      -1,  5, -1, 
+                       0, -1,  0 ]
+        }));
+
+        // تطبيق الفلاتر وإعادة رسم الصورة
+        activeObject.applyFilters();
+        canvas.renderAll();
+    }
+});
+
+document.getElementById('applyNoise').addEventListener('click', function() {
+    var activeObject = canvas.getActiveObject();
+    if (activeObject && activeObject.type === 'image') {
+        // إزالة جميع الفلاتر المطبقة مسبقاً لتجنب التأثير المتراكم
+        activeObject.filters = [];
+
+        // إضافة فلتر Noise
+        var noiseFilter = new fabric.Image.filters.Noise({
+            noise: 100 // قيمة الضوضاء, يمكن تعديلها لزيادة أو تقليل تأثير الضوضاء
+        });
+
+        activeObject.filters.push(noiseFilter);
+
+        // تطبيق الفلاتر وإعادة رسم الصورة
+        activeObject.applyFilters();
+        canvas.renderAll();
+    }
+});
 
 </script>
 </body>
