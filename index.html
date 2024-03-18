@@ -5,6 +5,8 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
 
+<link href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet"/>
+
 <style>
     #image {
         max-width: 100%; /* تعديل حسب الحاجة */
@@ -12,7 +14,6 @@
         display: block; /* يمكنك تعديل هذا لتناسب تخطيطك */
     }
 </style>
-
     
     <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
@@ -28,8 +29,6 @@
 <body>
     <h2>محرر الصور بسيط</h2>
     <input type="file" id="imageLoader" name="imageLoader"/>
-
-
 
 <button id="size800x600">800x600</button>
 <button id="size1024x768">1024x768</button>
@@ -51,8 +50,6 @@
 
 <button id="addText">أضف نص</button>
 
-
-
 <button id="undo">تراجع</button>
 <button id="redo">إعادة</button>
 <button id="saturation">زيادة التشبع</button>
@@ -61,9 +58,6 @@
 <button id="brightness">زيادة السطوع</button>
 <button id="contrast">زيادة التباين</button>
 <button id="blur">ضبابية</button>
-
-
-
 
 
 <button id="resize">تغيير حجم الصورة</button>
@@ -80,13 +74,7 @@
 </div>
 
 
-
     <canvas id="imageCanvas" width="300" height="200"></canvas>
-
-
-
-
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     <script>
@@ -156,12 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
 });
-
-
-
-
-
-
 
 
 // تطبيق الأبيض والأسود
@@ -318,8 +300,6 @@ document.getElementById('exportImage').addEventListener('click', function() {
 
 
 
-
-
 var cropper;
 document.getElementById('imageLoader').addEventListener('change', function (e) {
     var files = e.target.files;
@@ -424,9 +404,98 @@ document.getElementById('cropImage').addEventListener('click', function() {
 
 
 
+canvas.on('mouse:down', function(options) {
+    if (!options.target) {
+        canvas.discardActiveObject().requestRenderAll();
+    }
+});
 
+
+
+
+
+
+
+// زيادة حجم زوايا التحكم للتحديد والتدوير
+fabric.Object.prototype.cornerSize = 20; // حجم زوايا التحكم
+fabric.Object.prototype.rotatingPointOffset = 40; // مسافة نقطة التدوير من العنصر
+fabric.Object.prototype.padding = 5; // إضافة هامش حول العناصر لتسهيل التحديد
+
+// جعل خط التحديد أكثر وضوحًا
+fabric.Object.prototype.borderOpacityWhenMoving = 1;
+fabric.Object.prototype.borderColor = 'blue'; // لون الحدود
+fabric.Object.prototype.cornerColor = 'blue'; // لون زوايا التحكم
+fabric.Object.prototype.cornerStrokeColor = 'blue'; // لون حدود زوايا التحكم
+
+// تغيير مؤشر الفأرة لتحسين التوجيه
+fabric.Object.prototype.hoverCursor = 'pointer'; // مؤشر الفأرة عند التحويم
+
+// تعديلات أخرى قد تكون مفيدة
+fabric.Object.prototype.transparentCorners = false; // جعل زوايا التحكم غير شفافة
+fabric.Object.prototype.hasBorders = true; // إظهار الحدود حول العناصر
+fabric.Object.prototype.hasControls = true; // إظهار عناصر التحكم للتحديد والتدوير والتغيير في الحجم
+
+
+
+
+fabric.Object.prototype.borderOpacityWhenMoving = 0.4;
+fabric.Object.prototype.borderScaleFactor = .8; // تكبير حجم الحدود قليلاً للتأكيد عليها
+ 
+WebFont.load({
+    google: {
+      families: ['Font Awesome 5 Free:900']
+    },
+    active: function() {
+      // الخط جاهز للاستخدام، يمكنك الآن إنشاء canvas أو رسم الأيقونات
+    }
+  });
+
+
+
+function renderIcon(ctx, icon, left, top, size) {
+  ctx.font = `900 20px 'Font Awesome 5 Free'`;
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(icon, left, top);
+}
+
+fabric.Object.prototype.controls.deleteControl = new fabric.Control({
+  x: 0.5,
+  y: -0.5,
+  offsetY: -10,offsetX: 16,
+  cursorStyle: 'pointer',
+  mouseUpHandler: function(eventData, transform) {
+    var target = transform.target;
+    var canvas = target.canvas;
+    canvas.remove(target);
+    canvas.requestRenderAll();
+  },
+  render: function(ctx, left, top, styleOverride, fabricObject) {
+    renderIcon(ctx, '\uf1f8', left, top, '20px'); // \uf1f8 is FontAwesome's trash icon
+  },
+  cornerSize: 24
+});
+
+fabric.Object.prototype.controls.clone = new fabric.Control({
+  x: 0.5,
+  y: -0.5,
+  offsetY: 20,offsetX: 16,
+  cursorStyle: 'pointer',
+  mouseUpHandler: function(eventData, transform) {
+    var target = transform.target;
+    target.clone(function(cloned) {
+      cloned.set({left: target.left + 10, top: target.top + 10});
+      target.canvas.add(cloned);
+    });
+  },
+  render: function(ctx, left, top, styleOverride, fabricObject) {
+    renderIcon(ctx, '\uf0c5', left, top, '20px'); // \uf0c5 is FontAwesome's copy icon
+  },
+  cornerSize: 24
+});
 
 
 </script>
 </body>
-</html>
+    </html>
