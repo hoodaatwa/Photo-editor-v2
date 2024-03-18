@@ -107,6 +107,7 @@ document.getElementById('imageLoader').addEventListener('change', function (e) {
             });
             canvas.clear();
             canvas.add(image);
+            canvas.sendToBack(img);
             canvas.setActiveObject(image);
         }
     }
