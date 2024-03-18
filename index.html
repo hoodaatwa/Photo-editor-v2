@@ -2,7 +2,6 @@
 <html>
 <head>
 
-
 <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
 
 <link href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet"/>
@@ -65,6 +64,13 @@
 <button id="exportImage">تصدير الصورة</button>
 
 <button id="cropImage">قص الصورة</button>
+
+
+Distance: <input type="range" id="distance" min="0" max="1" step="0.01" value="0.05">
+Color: <input type="color" id="color" value="#FFFFFF">
+<button id="applyFilters">Apply Filters</button>
+
+
 
 <div id="imageContainer" style="width: 100%; max-height: 400px; margin: auto; overflow: hidden;">
     
@@ -299,7 +305,6 @@ document.getElementById('exportImage').addEventListener('click', function() {
 });
 
 
-
 var cropper;
 document.getElementById('imageLoader').addEventListener('change', function (e) {
     var files = e.target.files;
@@ -367,7 +372,6 @@ document.getElementById('customSize').addEventListener('click', function() {
 });
 
 
-
 document.getElementById('cropImage').addEventListener('click', function() {
     if (!cropper) {
         alert('الرجاء تحميل صورة أولاً.');
@@ -400,20 +404,11 @@ document.getElementById('cropImage').addEventListener('click', function() {
 
 
 
-
-
-
-
 canvas.on('mouse:down', function(options) {
     if (!options.target) {
         canvas.discardActiveObject().requestRenderAll();
     }
 });
-
-
-
-
-
 
 
 // زيادة حجم زوايا التحكم للتحديد والتدوير
@@ -437,7 +432,6 @@ fabric.Object.prototype.hasControls = true; // إظهار عناصر التحك�
 
 
 
-
 fabric.Object.prototype.borderOpacityWhenMoving = 0.4;
 fabric.Object.prototype.borderScaleFactor = .8; // تكبير حجم الحدود قليلاً للتأكيد عليها
  
@@ -449,7 +443,6 @@ WebFont.load({
       // الخط جاهز للاستخدام، يمكنك الآن إنشاء canvas أو رسم الأيقونات
     }
   });
-
 
 
 function renderIcon(ctx, icon, left, top, size) {
@@ -493,6 +486,31 @@ fabric.Object.prototype.controls.clone = new fabric.Control({
     renderIcon(ctx, '\uf0c5', left, top, '20px'); // \uf0c5 is FontAwesome's copy icon
   },
   cornerSize: 24
+});
+
+
+
+document.getElementById('applyFilters').addEventListener('click', function() {
+    var distanceValue = parseFloat(document.getElementById('distance').value);
+    var colorValue = document.getElementById('color').value;
+
+    var activeObject = canvas.getActiveObject();
+    if (activeObject && activeObject.type === 'image') {
+        // إعادة تعيين الفلاتر بإزالتها جميعًا
+        activeObject.filters = [];
+
+        // إضافة فلتر RemoveColor الجديد
+        activeObject.filters.push(
+            new fabric.Image.filters.RemoveColor({
+                distance: distanceValue,
+                color: colorValue
+            })
+        );
+
+        // تطبيق الفلاتر وإعادة رسم الصورة
+        activeObject.applyFilters();
+        canvas.renderAll();
+    }
 });
 
 
