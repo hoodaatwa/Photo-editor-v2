@@ -28,6 +28,10 @@
 <body>
     <h2>محرر الصور بسيط</h2>
     <input type="file" id="imageLoader" name="imageLoader"/>
+<button id="addLayerBtn">إضافة طبقة</button>
+
+<button id="confirmCrop" style="display:none;">تأكيد القص</button>
+
 
 <button id="size800x600">800x600</button>
 <button id="size1024x768">1024x768</button>
@@ -79,8 +83,8 @@ Distance: <input type="range" id="distance" min="0" max="1" step="0.01" value="0
 Color: <input type="color" id="color" value="#FFFFFF">
 <button id="applyFilters">Apply Filters</button>
 
-<div id="imageContainer" style="width: 100%; max-height: 400px; margin: auto; overflow: hidden;">
-    
+<div id="imageContainer" style="max-width: 300px; max-height: 200px; margin: auto; overflow: hidden;">
+ <img id="imageToCrop" src="" style="display:none; max-width: 100%; max-height:200px"/>   
 <img id="image" style="display: none;"/>
 
 </div>
@@ -374,6 +378,7 @@ document.getElementById('customSize').addEventListener('click', function() {
     }
 });
 
+
 document.getElementById('cropImage').addEventListener('click', function() {
     if (!cropper) {
         alert('الرجاء تحميل صورة أولاً.');
@@ -412,6 +417,7 @@ canvas.on('mouse:down', function(options) {
     }
 });
 
+
 // زيادة حجم زوايا التحكم للتحديد والتدوير
 fabric.Object.prototype.cornerSize = 20; // حجم زوايا التحكم
 fabric.Object.prototype.rotatingPointOffset = 40; // مسافة نقطة التدوير من العنصر
@@ -444,6 +450,7 @@ WebFont.load({
       // الخط جاهز للاستخدام، يمكنك الآن إنشاء canvas أو رسم الأيقونات
     }
   });
+
 
 function renderIcon(ctx, icon, left, top, size) {
   ctx.font = `900 20px 'Font Awesome 5 Free'`;
@@ -525,6 +532,7 @@ document.getElementById('applyVintage').addEventListener('click', function() {
         canvas.renderAll();
     }
 });
+
 
 document.getElementById('applyEmboss').addEventListener('click', function() {
     var activeObject = canvas.getActiveObject();
@@ -622,6 +630,58 @@ document.getElementById('toggleBackground').addEventListener('change', function(
         canvas.requestRenderAll();
     }
 });
+
+document.getElementById('addLayerBtn').addEventListener('click', function() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*'; // تأكد من قبول الصور فقط
+    input.onchange = function(e) {
+        var file = e.target.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var imgElement = document.getElementById('imageToCrop');
+                imgElement.src = event.target.result;
+                imgElement.style.display = 'block'; // عرض الصورة للقص
+                var cropper = new Cropper(imgElement, {
+                    viewMode: 1,
+            autoCropArea: 1,
+            movable: false,
+            rotatable: false,
+            scalable: false,
+            zoomable: true,
+            autoCrop: true,
+            autoCropArea: 1,
+            resizable: false, // يمكنك تغييره حسب الحاجة
+                });
+
+                // إظهار زر تأكيد القص
+                document.getElementById('confirmCrop').style.display = 'block';
+                document.getElementById('confirmCrop').onclick = function() {
+                    // الحصول على الصورة المقصوصة كـ URL
+                    cropper.getCroppedCanvas().toBlob(function(blob) {
+                        var newImgUrl = URL.createObjectURL(blob);
+
+                        // إضافة الصورة المقصوصة إلى القماش
+                        fabric.Image.fromURL(newImgUrl, function(myImg) {
+                            // i.e., إضافة الصورة إلى قماش Fabric.js هنا
+                            canvas.add(myImg);
+                        });
+                    });
+
+                    // إخفاء عناصر القص بعد الإضافة
+                    
+                    imgElement.style.display = 'none';
+                    document.getElementById('confirmCrop').style.display = 'none';
+                    cropper.destroy();
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+});
+
 
 </script>
 </body>
