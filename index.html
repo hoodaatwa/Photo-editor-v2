@@ -47,6 +47,9 @@
 <label for="backgroundColor">Background Color:</label>
 <input type="color" id="backgroundColor" value="#ffffff">
 
+<button id="updateTextProperties">Update Text Properties</button>
+
+
 <button id="addText">أضف نص</button>
 
 <button id="undo">تراجع</button>
@@ -108,6 +111,7 @@ document.getElementById('imageLoader').addEventListener('change', function (e) {
     reader.readAsDataURL(e.target.files[0]);
 });
 
+
 // Enable drawing
 var drawingModeEl = document.createElement('button');
 drawingModeEl.textContent = 'Toggle Drawing Mode';
@@ -120,6 +124,7 @@ drawingModeEl.onclick = function() {
     }
 };
 document.body.appendChild(drawingModeEl);
+
 
 document.addEventListener('DOMContentLoaded', function() {
     // إضافة التحكمات إلى الصفحة
@@ -146,6 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
 });
+
 
 // تطبيق الأبيض والأسود
 document.getElementById('grayscale').addEventListener('click', function() {
@@ -192,6 +198,7 @@ canvas.on('object:modified', function() {
     updateState();
     mods = 0;
 });
+
 
 // تحميل الخطوط من Google Fonts
 const googleFontsApiKey = 'AIzaSyDtlPDPq48xcOYSGnS4bv3UKLWZk-YSSlg'; // استبدل بمفتاح API الخاص بك
@@ -277,6 +284,7 @@ document.getElementById('resize').addEventListener('click', function() {
     updateState();
 });
 
+
 document.getElementById('blur').addEventListener('click', function() {
     var obj = canvas.getActiveObject();
     if (!obj) return alert('الرجاء اختيار صورة');
@@ -288,6 +296,7 @@ document.getElementById('blur').addEventListener('click', function() {
     canvas.renderAll();
 });
 
+
 document.getElementById('exportImage').addEventListener('click', function() {
     var imageData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     var link = document.createElement('a');
@@ -295,6 +304,7 @@ document.getElementById('exportImage').addEventListener('click', function() {
     link.href = imageData;
     link.click();
 });
+
 
 var cropper;
 document.getElementById('imageLoader').addEventListener('change', function (e) {
@@ -362,6 +372,7 @@ document.getElementById('customSize').addEventListener('click', function() {
     }
 });
 
+
 document.getElementById('cropImage').addEventListener('click', function() {
     if (!cropper) {
         alert('الرجاء تحميل صورة أولاً.');
@@ -392,11 +403,14 @@ document.getElementById('cropImage').addEventListener('click', function() {
     });
 });
 
+
+
 canvas.on('mouse:down', function(options) {
     if (!options.target) {
         canvas.discardActiveObject().requestRenderAll();
     }
 });
+
 
 // زيادة حجم زوايا التحكم للتحديد والتدوير
 fabric.Object.prototype.cornerSize = 20; // حجم زوايا التحكم
@@ -513,6 +527,7 @@ document.getElementById('applyVintage').addEventListener('click', function() {
     }
 });
 
+
 document.getElementById('applyEmboss').addEventListener('click', function() {
     var activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'image') {
@@ -569,6 +584,30 @@ document.getElementById('applyNoise').addEventListener('click', function() {
         canvas.renderAll();
     }
 });
+document.getElementById('updateTextProperties').addEventListener('click', function() {
+    var fontFamily = document.getElementById('fontFamily').value;
+    var textColor = document.getElementById('textColor').value;
+    var backgroundColor = document.getElementById('backgroundColor').value;
+    var activeObject = canvas.getActiveObject();
+
+    if (activeObject && activeObject.type === 'i-text') {
+        // تحديث خصائص النص
+        WebFont.load({
+            google: {
+                families: [fontFamily]
+            },
+            active: function() {
+                activeObject.set({
+                    fontFamily: fontFamily,
+                    fill: textColor,
+                    backgroundColor: backgroundColor
+                });
+                canvas.requestRenderAll();
+            }
+        });
+    }
+});
+
 
 </script>
 </body>
