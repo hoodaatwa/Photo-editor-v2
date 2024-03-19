@@ -495,6 +495,24 @@ fabric.Object.prototype.controls.clone = new fabric.Control({
   cornerSize: 24
 });
 
+fabric.Object.prototype.controls.deselectControl = new fabric.Control({
+  x: -0.5,
+  y: -0.5,
+  offsetY: -10,
+  offsetX: -16, // يمكنك تعديل هذه القيم لتغيير موقع الزر
+  cursorStyle: 'pointer',
+  mouseUpHandler: function(eventData, transform) {
+    var canvas = transform.target.canvas;
+    canvas.discardActiveObject(); // هذا يلغي تحديد الكائن
+    canvas.requestRenderAll(); // يعيد رسم الـ canvas لتحديث العرض
+  },
+  render: function(ctx, left, top, styleOverride, fabricObject) {
+    renderIcon(ctx, '\uf00d', left, top, '20px'); // \uf00d هو أيقونة FontAwesome لـ "إغلاق"
+  },
+  cornerSize: 24
+});
+
+        
 document.getElementById('applyFilters').addEventListener('click', function() {
     var distanceValue = parseFloat(document.getElementById('distance').value);
     var colorValue = document.getElementById('color').value;
