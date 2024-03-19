@@ -453,7 +453,7 @@ WebFont.load({
 
 
 function renderIcon(ctx, icon, left, top, size) {
-  ctx.font = `900 20px 'Font Awesome 5 Free'`;
+  ctx.font = `900 24px 'Font Awesome 5 Free'`;
   ctx.fillStyle = '#000';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -463,7 +463,7 @@ function renderIcon(ctx, icon, left, top, size) {
 fabric.Object.prototype.controls.deleteControl = new fabric.Control({
   x: 0.5,
   y: -0.5,
-  offsetY: -10,offsetX: 16,
+  offsetY: -10,offsetX: 24,
   cursorStyle: 'pointer',
   mouseUpHandler: function(eventData, transform) {
     var target = transform.target;
@@ -480,7 +480,7 @@ fabric.Object.prototype.controls.deleteControl = new fabric.Control({
 fabric.Object.prototype.controls.clone = new fabric.Control({
   x: 0.5,
   y: -0.5,
-  offsetY: 20,offsetX: 16,
+  offsetY: 20,offsetX: 24,
   cursorStyle: 'pointer',
   mouseUpHandler: function(eventData, transform) {
     var target = transform.target;
@@ -498,8 +498,8 @@ fabric.Object.prototype.controls.clone = new fabric.Control({
 fabric.Object.prototype.controls.deselectControl = new fabric.Control({
   x: -0.5,
   y: -0.5,
-  offsetY: -10,
-  offsetX: -16, // يمكنك تعديل هذه القيم لتغيير موقع الزر
+  offsetY: 0,
+  offsetX: 24, // يمكنك تعديل هذه القيم لتغيير موقع الزر
   cursorStyle: 'pointer',
   mouseUpHandler: function(eventData, transform) {
     var canvas = transform.target.canvas;
