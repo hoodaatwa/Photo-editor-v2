@@ -46,6 +46,8 @@
 
 <label for="backgroundColor">Background Color:</label>
 <input type="color" id="backgroundColor" value="#ffffff">
+<label for="toggleBackground">إظهار/إخفاء خلفية النص:</label>
+<input type="checkbox" id="toggleBackground" checked>
 
 <button id="updateTextProperties">Update Text Properties</button>
 
@@ -372,7 +374,6 @@ document.getElementById('customSize').addEventListener('click', function() {
     }
 });
 
-
 document.getElementById('cropImage').addEventListener('click', function() {
     if (!cropper) {
         alert('الرجاء تحميل صورة أولاً.');
@@ -411,7 +412,6 @@ canvas.on('mouse:down', function(options) {
     }
 });
 
-
 // زيادة حجم زوايا التحكم للتحديد والتدوير
 fabric.Object.prototype.cornerSize = 20; // حجم زوايا التحكم
 fabric.Object.prototype.rotatingPointOffset = 40; // مسافة نقطة التدوير من العنصر
@@ -444,7 +444,6 @@ WebFont.load({
       // الخط جاهز للاستخدام، يمكنك الآن إنشاء canvas أو رسم الأيقونات
     }
   });
-
 
 function renderIcon(ctx, icon, left, top, size) {
   ctx.font = `900 20px 'Font Awesome 5 Free'`;
@@ -527,7 +526,6 @@ document.getElementById('applyVintage').addEventListener('click', function() {
     }
 });
 
-
 document.getElementById('applyEmboss').addEventListener('click', function() {
     var activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'image') {
@@ -608,6 +606,22 @@ document.getElementById('updateTextProperties').addEventListener('click', functi
     }
 });
 
+document.getElementById('toggleBackground').addEventListener('change', function() {
+    var activeObject = canvas.getActiveObject();
+    if (activeObject && (activeObject.type === 'i-text' || activeObject.type === 'text')) {
+        // تحقق من حالة زر التحقق
+        if (this.checked) {
+            // إذا تم التحقق منه، إظهار الخلفية بلون افتراضي أو آخر معروف
+            activeObject.set('backgroundColor', activeObject.__originalBackgroundColor || '');
+        } else {
+            // إذا لم يتم التحقق منه، إخفاء الخلفية بإزالة اللون
+            // حفظ اللون الأصلي لاستخدامه عند إعادة تحديد الخيار
+            activeObject.__originalBackgroundColor = activeObject.get('backgroundColor');
+            activeObject.set('backgroundColor', '');
+        }
+        canvas.requestRenderAll();
+    }
+});
 
 </script>
 </body>
