@@ -637,8 +637,8 @@ fabric.Object.prototype.controls.clone = new fabric.Control({
 fabric.Object.prototype.controls.deselectControl = new fabric.Control({
   x: -0.5,
   y: -0.5,
-  offsetY: 0,
-  offsetX: 24, // يمكنك تعديل هذه القيم لتغيير موقع الزر
+  offsetY: -10,
+  offsetX: -24, // يمكنك تعديل هذه القيم لتغيير موقع الزر
   cursorStyle: 'pointer',
   mouseUpHandler: function(eventData, transform) {
     var canvas = transform.target.canvas;
@@ -647,6 +647,23 @@ fabric.Object.prototype.controls.deselectControl = new fabric.Control({
   },
   render: function(ctx, left, top, styleOverride, fabricObject) {
     renderIcon(ctx, '\uf410', left, top, '20px'); // \uf00d هو أيقونة FontAwesome لـ "إغلاق"
+  },
+  cornerSize: 24
+});
+
+fabric.Object.prototype.controls.flipHorizontal = new fabric.Control({
+  x: 0.5,
+  y: -0.5,
+  offsetY: 50, // يمكن تعديل هذه القيمة لتغيير موقع الزر
+  offsetX: 24,
+  cursorStyle: 'pointer',
+  mouseUpHandler: function(eventData, transform) {
+    var target = transform.target;
+    target.set('flipX', !target.flipX); // قلب العنصر أفقياً
+    target.canvas.requestRenderAll(); // يعيد رسم الـ canvas
+  },
+  render: function(ctx, left, top, styleOverride, fabricObject) {
+    renderIcon(ctx, '\uf074', left, top, '20px'); // استخدم أيقونة FontAwesome للقلب الأفقي
   },
   cornerSize: 24
 });
