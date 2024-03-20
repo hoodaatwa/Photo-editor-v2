@@ -111,13 +111,15 @@ label {
 <button id="confirmCrop" style="display:none;">تأكيد القص</button>
 
 
+<div class="group">
 <button id="size800x600">800x600</button>
 <button id="size1024x768">1024x768</button>
 <button id="customSize">حجم مخصص</button>
 <input type="number" id="customWidth" placeholder="عرض"/>
 <input type="number" id="customHeight" placeholder="ارتفاع"/>
+</div>
 
-
+<div class="group">
 <label for="fontFamily">Font Family:</label>
 <select id="fontFamily">
     <!-- سيتم تعبئة هذه القائمة ديناميكياً -->
@@ -135,9 +137,15 @@ label {
 
 
 <button id="addText">أضف نص</button>
+</div>
 
+
+<div class="group">
 <button id="undo">تراجع</button>
 <button id="redo">إعادة</button>
+</div>
+
+<div class="group">
 <button id="saturation">زيادة التشبع</button>
 <button id="applyVintage">Apply Vintage Filter</button>
 <button id="applyEmboss">Apply Emboss Filter</button>
@@ -148,7 +156,7 @@ label {
 <button id="brightness">زيادة السطوع</button>
 <button id="contrast">زيادة التباين</button>
 <button id="blur">ضبابية</button>
-
+</div>
 
 <button id="resize">تغيير حجم الصورة</button>
 
@@ -157,10 +165,11 @@ label {
 <button id="cropImage">قص الصورة</button>
 
 
+<div class="group">
 Distance: <input type="range" id="distance" min="0" max="1" step="0.01" value="0.05">
 Color: <input type="color" id="color" value="#FFFFFF">
 <button id="applyFilters">Apply Filters</button>
-
+</div>
 
 <button id="moveUp" class="canvas-nav-btn">↑</button>
 <button id="moveDown" class="canvas-nav-btn">↓</button>
