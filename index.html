@@ -17,8 +17,8 @@
   color: white;
   border: none;
   height:40px;
-  padding: 10px 20px;
-  margin: 5px;
+  padding: 10px;
+  margin: 10px;
   border-radius: 4px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3); /* ظل Material Design */
@@ -34,7 +34,6 @@ button:hover {
     background-color: #f9f9f9;
     padding: 10px;
     border-radius: 5px;
-    border-radius:5px;
     border:2px solid #1976D2;
     }
     input[type="file"],
@@ -192,15 +191,10 @@ label {
 </div>
 </div>
 </div>
-<button id="resize"><i class="fas fa-expand"></i></button>
 
-<button id="exportImage"><i class="fas fa-download"></i></button>
 
-<button id="cropImage"><i class="fas fa-crop"></i></button>
-<button id="undo"><i class="fas fa-undo"></i></button>
-<button id="redo"><i class="fas fa-redo"></i></button>
 <div class="accordion">
-  <h3 class="accordion-header"><i class="fas fa-backgroud"></i> Background Color removal</h3>
+  <h3 class="accordion-header"><i class="fas fa-eye-dropper"></i> Background Color removal</h3>
   <div class="accordion-content">
 <div class="group">
 Distance: <input type="range" id="distance" min="0" max="1" step="0.01" value="0.05">
@@ -209,6 +203,15 @@ Color: <input type="color" id="color" value="#FFFFFF">
 </div>
 </div>
 </div>
+
+
+<button id="resize"><i class="fas fa-compress-arrows-alt"></i></button>
+
+<button id="exportImage"><i class="fas fa-download"></i></button>
+
+<button id="cropImage"><i class="fas fa-crop"></i></button>
+<button id="undo"><i class="fas fa-undo"></i></button>
+<button id="redo"><i class="fas fa-redo"></i></button>
 
 <button id="moveUp" class="canvas-nav-btn">↑</button>
 <button id="moveDown" class="canvas-nav-btn">↓</button>
@@ -874,4 +877,4 @@ document.querySelectorAll('.accordion-header').forEach(button => {
 
 </script>
 </body>
-           </html>
+      </html>
