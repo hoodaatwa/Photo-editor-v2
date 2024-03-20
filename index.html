@@ -92,27 +92,31 @@ label {
 .canvas-nav-btn {
   position: fixed;
   display: none; /* إخفاء الأزرار بشكل افتراضي */
-  z-index: 1000;
+  z-index: 1200;
   cursor: pointer;
+  font-size:20px;
+  text-align:center;
+  font-weight:1000;
+  padding-top:0;
 }
 
 #moveUp {
   top: 20px;
-  left: 50%;
+  left: calc(50% - 20px);
 }
 
 #moveDown {
   bottom: 20px;
-  left: 50%;
+  left: calc(50% - 20px);
 }
 
 #moveLeft {
-  top: 50%;
+  top: calc(50% - 20px);
   left: 20px;
 }
 
 #moveRight {
-  top: 50%;
+  top: calc(50% - 20px);
   right: 20px;
 }
 
