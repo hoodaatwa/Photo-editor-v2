@@ -66,6 +66,19 @@ label {
     margin: 5px 0px 5px 0;
     color: #666;
 }
+.accordion-content {
+  display: none;
+  
+}
+
+.accordion-header {
+  cursor: pointer;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #ddd;
+  border-radius:10px;
+}
+
 </style>
     
     <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet"/>
@@ -113,7 +126,9 @@ label {
 
 <button id="confirmCrop" style="display:none;">تأكيد القص</button>
 
-
+<div class="accordion">
+  <h3 class="accordion-header"><i class="fas fa-expand"></i> Size</h3>
+  <div class="accordion-content">
 <div class="group">
 <button id="size800x600">800x600</button>
 <button id="size1024x768">1024x768</button>
@@ -121,7 +136,11 @@ label {
 <input type="number" id="customWidth" placeholder="عرض"/>
 <input type="number" id="customHeight" placeholder="ارتفاع"/>
 </div>
-
+</div>
+</div>
+<div class="accordion">
+  <h3 class="accordion-header"><i class="fas fa-font"></i> Text</h3>
+  <div class="accordion-content">
 <div class="group">
 <label for="fontFamily">Font Family:</label>
 <select id="fontFamily">
@@ -141,7 +160,11 @@ label {
 
 <button id="addText">أضف نص</button>
 </div>
-
+</div>
+</div>
+<div class="accordion">
+  <h3 class="accordion-header"><i class="fas fa-pen"></i> Stroke</h3>
+  <div class="accordion-content">
 <div class="group">
 <label for="strokeColor">لون الخط:</label>
         <input type="color" id="strokeColor" value="#000000">
@@ -149,12 +172,12 @@ label {
         <label for="lineWidth">سمك الخط:</label>
         <input type="range" id="lineWidth" min="1" max="10" value="1">
 </div>
-
-<div class="group">
-<button id="undo">تراجع</button>
-<button id="redo">إعادة</button>
+</div>
 </div>
 
+<div class="accordion">
+  <h3 class="accordion-header"><i class="fas fa-sun"></i> Filter</h3>
+  <div class="accordion-content">
 <div class="group">
 <button id="saturation">زيادة التشبع</button>
 <button id="applyVintage">Apply Vintage Filter</button>
@@ -167,18 +190,24 @@ label {
 <button id="contrast">زيادة التباين</button>
 <button id="blur">ضبابية</button>
 </div>
+</div>
+</div>
+<button id="resize"><i class="fas fa-expand"></i></button>
 
-<button id="resize">تغيير حجم الصورة</button>
+<button id="exportImage"><i class="fas fa-download"></i></button>
 
-<button id="exportImage">تصدير الصورة</button>
-
-<button id="cropImage">قص الصورة</button>
-
-
+<button id="cropImage"><i class="fas fa-crop"></i></button>
+<button id="undo"><i class="fas fa-undo"></i></button>
+<button id="redo"><i class="fas fa-redo"></i></button>
+<div class="accordion">
+  <h3 class="accordion-header"><i class="fas fa-backgroud"></i> Background Color removal</h3>
+  <div class="accordion-content">
 <div class="group">
 Distance: <input type="range" id="distance" min="0" max="1" step="0.01" value="0.05">
 Color: <input type="color" id="color" value="#FFFFFF">
 <button id="applyFilters">Apply Filters</button>
+</div>
+</div>
 </div>
 
 <button id="moveUp" class="canvas-nav-btn">↑</button>
@@ -827,7 +856,22 @@ document.getElementById('moveRight').onclick = function() { scrollCanvas(60, 0);
 function scrollCanvas(deltaX, deltaY) {
   window.scrollBy(deltaX, deltaY);
 }
+document.querySelectorAll('.accordion-header').forEach(button => {
+  button.addEventListener('click', () => {
+    const accordionContent = button.nextElementSibling;
+
+    if (accordionContent.style.display === 'block') {
+      accordionContent.style.display = 'none';
+    } else {
+      document.querySelectorAll('.accordion-content').forEach(content => {
+        content.style.display = 'none'; // اغلق جميع الأقسام الأخرى
+      });
+      accordionContent.style.display = 'block'; // فتح القسم الحالي فقط
+    }
+  });
+});
+
 
 </script>
 </body>
-    </html>
+           </html>
