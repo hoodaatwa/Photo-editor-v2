@@ -93,29 +93,48 @@ Color: <input type="color" id="color" value="#FFFFFF">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     <script>
-var canvas = new fabric.Canvas('imageCanvas');
-document.getElementById('imageLoader').addEventListener('change', function (e) {
+
+
+var canvas = new fabric.Canvas('imageCanvas', {
+  width: 300, // حدد عرض الـ canvas
+  height: 200, // حدد ارتفاع الـ canvas
+});
+
+document.getElementById('imageLoader').addEventListener('change', function(e) {
     var reader = new FileReader();
-    reader.onload = function (event) {
+    reader.onload = function(event) {
         var imgObj = new Image();
         imgObj.src = event.target.result;
-        imgObj.onload = function () {
-            var image = new fabric.Image(imgObj);
-            image.set({
+        imgObj.onload = function() {
+            // حساب نسبة تحجيم الصورة لتناسب الـ canvas
+            var canvasAspectRatio = canvas.width / canvas.height;
+            var imgAspectRatio = imgObj.width / imgObj.height;
+            var scaleRatio;
+
+            if (canvasAspectRatio > imgAspectRatio) {
+                scaleRatio = canvas.height / imgObj.height;
+            } else {
+                scaleRatio = canvas.width / imgObj.width;
+            }
+
+            var image = new fabric.Image(imgObj, {
                 angle: 0,
                 padding: 10,
                 cornersize: 10,
-                height: imgObj.height,
-                width: imgObj.width,
+                scaleX: scaleRatio, // تطبيق نسبة التحجيم
+                scaleY: scaleRatio, // تطبيق نسبة التحجيم
             });
+
             canvas.clear();
             canvas.add(image);
-            canvas.sendToBack(img);
-            canvas.setActiveObject(image);
+            canvas.centerObject(image); // مركز الصورة في الـ canvas
+            canvas.renderAll();
         }
     }
     reader.readAsDataURL(e.target.files[0]);
 });
+
+
 
 
 // Enable drawing
@@ -354,29 +373,51 @@ document.getElementById('imageLoader').addEventListener('change', function (e) {
     }
 });
 
+
+// تعريف الأبعاد الافتراضية للـ canvas
+canvas.originalWidth = canvas.getWidth();
+canvas.originalHeight = canvas.getHeight();
+
 document.getElementById('size800x600').addEventListener('click', function() {
-    canvas.setWidth(800);
-    canvas.setHeight(600);
-    canvas.renderAll();
+    updateCanvasSize(800, 600);
 });
 
 document.getElementById('size1024x768').addEventListener('click', function() {
-    canvas.setWidth(1024);
-    canvas.setHeight(768);
-    canvas.renderAll();
+    updateCanvasSize(1024, 768);
 });
 
 document.getElementById('customSize').addEventListener('click', function() {
-    var width = document.getElementById('customWidth').value;
-    var height = document.getElementById('customHeight').value;
+    var width = parseInt(document.getElementById('customWidth').value, 10);
+    var height = parseInt(document.getElementById('customHeight').value, 10);
     if (width > 0 && height > 0) {
-        canvas.setWidth(width);
-        canvas.setHeight(height);
-        canvas.renderAll();
+        updateCanvasSize(width, height);
     } else {
         alert('الرجاء إدخال قيم صحيحة للعرض والارتفاع.');
     }
 });
+
+function updateCanvasSize(width, height) {
+    // تحديث الأبعاد الأصلية
+    canvas.originalWidth = width;
+    canvas.originalHeight = height;
+    // تحديث الأبعاد الظاهرة في الواجهة بناءً على نسبة معينة لتناسب الشاشة
+    var scaleRatio = Math.min(window.innerWidth / width, window.innerHeight / height);
+    canvas.setWidth(width * scaleRatio);
+    canvas.setHeight(height * scaleRatio);
+    canvas.renderAll();
+}
+
+
+// دالة لتصدير الصورة بالأبعاد الأصلية
+function exportCanvasAsImage() {
+    var dataURL = canvas.toDataURL({
+        width: originalWidth,
+        height: originalHeight,
+        multiplier: 1 / scaleRatio // استخدام نسبة التحجيم المعاكسة للعودة إلى الحجم الأصلي
+    });
+    // يمكنك هنا إضافة كود لحفظ dataURL كصورة أو إظهارها للمستخدم
+}
+
 
 
 document.getElementById('cropImage').addEventListener('click', function() {
