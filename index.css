@@ -58,13 +58,13 @@ label {
 }
 .accordion-content {
   display: none;
-  
+  margin:-10px 10px 0;
 }
 
 .accordion-header {
   cursor: pointer;
   padding: 10px;
-  margin: 10px 0 0;
+  margin: 10px 10px 0;
   background-color: #ddd;
   border-radius:10px;
 }
