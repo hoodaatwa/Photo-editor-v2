@@ -121,9 +121,69 @@ label {
 }
 
     </style>
+<style>
+/* تصميم القائمة الجانبية */
+.sidebar {;
+  height :auto;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 30px;
+  left: 0;
+  bottom:30px;
+  background-color: #ddd;
+  overflow: auto;
+  transition: 0.5s;
+  padding-top: 60px;
+  border-radius :0px 5px 5px 0px;
+}
+
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+/* تصميم زر إغلاق القائمة */
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 2px;
+  font-size: 36px;
+  margin-left: 20px;
+}
+
+/* تصميم زر فتح القائمة */
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  border: none;
+  position: fixed;
+  top: 40px;
+  left: 0px !important;
+  border-radius :0px 5px 5px 0px;
+}
+
+/* تعديل المحتوى عند فتح القائمة الجانبية */
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+</style>
 </head>
 <body>
     <h2>محرر الصور بسيط</h2>
+
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+  <a href="#" class="closebtn" onclick="closeNav()">×</a>
 <div class="accordion">
   <h3 class="accordion-header"><i class="fas fa-image"></i>ADD Image and <i class="fas fa-crop"></i> Crop</h3>
   <div class="accordion-content">
@@ -229,7 +289,10 @@ Color: <input type="color" id="color" value="#FFFFFF">
 
 <button id="undo"><i class="fas fa-undo"></i></button>
 <button id="redo"><i class="fas fa-redo"></i></button>
+</div>
 
+<!-- الزر لفتح القائمة الجانبية -->
+<button class="openbtn" onclick="openNav()">☰</button>
 <button id="moveUp" class="canvas-nav-btn">↑</button>
 <button id="moveDown" class="canvas-nav-btn">↓</button>
 <button id="moveLeft" class="canvas-nav-btn">←</button>
@@ -245,6 +308,24 @@ Color: <input type="color" id="color" value="#FFFFFF">
     <canvas id="imageCanvas" width="300" height="200"></canvas>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
+<script>
+function openNav() {
+  document.getElementById("sidebar").style.width = "250px";
+  // document.getElementById("main").style.marginLeft = "250px"; // إذا كان لديك عنصر رئيسي يحتاج إلى التحرك
+}
+
+function closeNav() {
+  document.getElementById("sidebar").style.width = "0";
+  // document.getElementById("main").style.marginLeft= "0"; // إذا كان لديك عنصر رئيسي يحتاج إلى العودة
+}
+
+function selectTool(toolName) {
+  // هنا يمكنك إضافة كود للتعامل مع اختيار الأداة
+  console.log("Selected tool: " + toolName);
+}
+
+
+</script>
     <script>
 var canvas = new fabric.Canvas('imageCanvas');
 document.getElementById('imageLoader').addEventListener('change', function (e) {
