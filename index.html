@@ -675,8 +675,7 @@ document.getElementById('applyFilters').addEventListener('click', function() {
 
     var activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'image') {
-        // إعادة تعيين الفلاتر بإزالتها جميعًا
-        activeObject.filters = [];
+        
 
         // إضافة فلتر RemoveColor الجديد
         activeObject.filters.push(
@@ -695,8 +694,7 @@ document.getElementById('applyFilters').addEventListener('click', function() {
 document.getElementById('applyVintage').addEventListener('click', function() {
     var activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'image') {
-        // إعادة تعيين الفلاتر بإزالتها جميعًا لتجنب تراكم الفلاتر
-        activeObject.filters = [];
+        
 
         // إضافة فلتر Vintage
         activeObject.filters.push(new fabric.Image.filters.Vintage());
@@ -711,8 +709,7 @@ document.getElementById('applyVintage').addEventListener('click', function() {
 document.getElementById('applyEmboss').addEventListener('click', function() {
     var activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'image') {
-        // إعادة تعيين الفلاتر بإزالتها جميعًا لتجنب تراكم الفلاتر
-        activeObject.filters = [];
+        
 
         // إضافة فلتر Emboss
         activeObject.filters.push(new fabric.Image.filters.Convolute({
@@ -730,8 +727,7 @@ document.getElementById('applyEmboss').addEventListener('click', function() {
 document.getElementById('applySharpen').addEventListener('click', function() {
     var activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'image') {
-        // إزالة جميع الفلاتر المطبقة مسبقاً لتجنب التأثير المتراكم
-        activeObject.filters = [];
+        
 
         // إضافة فلتر Sharpen
         activeObject.filters.push(new fabric.Image.filters.Convolute({
@@ -749,8 +745,7 @@ document.getElementById('applySharpen').addEventListener('click', function() {
 document.getElementById('applyNoise').addEventListener('click', function() {
     var activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'image') {
-        // إزالة جميع الفلاتر المطبقة مسبقاً لتجنب التأثير المتراكم
-        activeObject.filters = [];
+        
 
         // إضافة فلتر Noise
         var noiseFilter = new fabric.Image.filters.Noise({
