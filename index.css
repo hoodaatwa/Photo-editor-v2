@@ -112,7 +112,7 @@ canvas {
   top: 30px;
   left: 0;
   bottom:30px;
-  background-color: #ddd;
+  background-color: #f9f9f9;
   overflow: auto;
   transition: 0.5s;
   padding-top: 60px;
