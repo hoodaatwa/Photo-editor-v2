@@ -121,13 +121,14 @@ label {
 }
 
     </style>
+
 <style>
 /* تصميم القائمة الجانبية */
 .sidebar {;
   height :auto;
   width: 0;
   position: fixed;
-  z-index: 1;
+  z-index: 1005;
   top: 30px;
   left: 0;
   bottom:30px;
@@ -167,13 +168,18 @@ label {
   top: 40px;
   left: 0px !important;
   border-radius :0px 5px 5px 0px;
+  margin :0;
+  height:40px;
+  padding :0px 10px;
+  z-index:500;
 }
 
 /* تعديل المحتوى عند فتح القائمة الجانبية */
 #main {
-  transition: margin-left .5s;
+  transition: margin-left .3s;
   padding: 16px;
 }
+
 
 </style>
 </head>
