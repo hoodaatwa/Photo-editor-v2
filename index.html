@@ -17,8 +17,6 @@
 <link href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet"/>    
 <link rel="stylesheet" href="index.css">>
 
-    
-    <title>محرر الصور</title>
 </head>
 
 <body>
@@ -73,9 +71,10 @@
 <div class="group">
 <button id="size800x600">800x600</button>
 <button id="size1024x768">1024x768</button>
-<button id="customSize">حجم مخصص</button>
+
 <input type="number" id="customWidth" placeholder="عرض"/>
 <input type="number" id="customHeight" placeholder="ارتفاع"/>
+ <button id="customSize">حجم مخصص</button>   
 </div>
 </div>
 </div>
@@ -95,7 +94,7 @@
 <input type="color" id="backgroundColor" value="#ffffff">
 <label for="toggleBackground">إظهار/إخفاء خلفية النص:</label>
 <input type="checkbox" id="toggleBackground" checked>
-
+<br/>
 <button id="updateTextProperties">Update Text Properties</button>
 
 
@@ -107,10 +106,10 @@
   <h3 class="accordion-header"><i class="fas fa-pen"></i> Stroke</h3>
   <div class="accordion-content">
 <div class="group">
-<label for="strokeColor">لون الخط:</label>
+<label for="strokeColor">Font Color:</label>
         <input type="color" id="strokeColor" value="#000000">
         
-        <label for="lineWidth">سمك الخط:</label>
+        <label for="lineWidth">Font Size:</label>
         <input type="range" id="lineWidth" min="1" max="10" value="1">
 </div>
 </div>
@@ -120,16 +119,16 @@
   <h3 class="accordion-header"><i class="fas fa-sun"></i> Filter</h3>
   <div class="accordion-content">
 <div class="group">
-<button id="saturation">زيادة التشبع</button>
+<button id="saturation">Saturation</button>
 <button id="applyVintage">Apply Vintage Filter</button>
 <button id="applyEmboss">Apply Emboss Filter</button>
 <button id="applySharpen">Apply Sharpen Filter</button>
 <button id="applyNoise">Apply Noise Filter</button>
 
-<button id="grayscale">الأبيض والأسود</button>
-<button id="brightness">زيادة السطوع</button>
-<button id="contrast">زيادة التباين</button>
-<button id="blur">ضبابية</button>
+<button id="grayscale">grayScale</button>
+<button id="brightness">brightness</button>
+<button id="contrast">contrast</button>
+<button id="blur">blur</button>
 </div>
 </div>
 </div>
