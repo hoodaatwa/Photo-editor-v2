@@ -1,9 +1,9 @@
-    #image {
+#image {
         max-width: 100%; /* تعديل حسب الحاجة */
         max-height: 200px; /* تعديل حسب الحاجة */
         display: block; /* يمكنك تعديل هذا لتناسب تخطيطك */
     }
-    button {
+button {
   background-color: #1976D2; /* لون أزرق Material Design */
   color: white;
   border: none;
@@ -69,9 +69,10 @@ label {
   border-radius:10px;
 }
 
-        canvas {
+
+canvas {
             border: 1px solid #cccccc;
-        }
+}
 .canvas-nav-btn {
   position: fixed;
   display: none; /* إخفاء الأزرار بشكل افتراضي */
@@ -101,4 +102,61 @@ label {
 #moveRight {
   top: calc(50% - 20px);
   right: 20px;
+}
+/* تصميم القائمة الجانبية */
+.sidebar {;
+  height :auto;
+  width: 0;
+  position: fixed;
+  z-index: 1005;
+  top: 30px;
+  left: 0;
+  bottom:30px;
+  background-color: #ddd;
+  overflow: auto;
+  transition: 0.5s;
+  padding-top: 60px;
+  border-radius :0px 5px 5px 0px;
+}
+
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+/* تصميم زر إغلاق القائمة */
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 2px;
+  font-size: 36px;
+  margin-left: 20px;
+}
+
+/* تصميم زر فتح القائمة */
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  border: none;
+  position: fixed;
+  top: 40px;
+  left: 0px !important;
+  border-radius :0px 5px 5px 0px;
+  margin :0;
+  height:40px;
+  width:40px;
+  padding :0px 5px;
+  z-index:500;
+ }
+
+/* تعديل المحتوى عند فتح القائمة الجانبية */
+#main {
+  transition: margin-left .3s;
+  padding: 16px;
 }
