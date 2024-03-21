@@ -14,6 +14,21 @@ function selectTool(toolName) {
   console.log("Selected tool: " + toolName);
 }
 
+document.querySelectorAll('.accordion-header').forEach(button => {
+  button.addEventListener('click', () => {
+    const accordionContent = button.nextElementSibling;
+
+    if (accordionContent.style.display === 'block') {
+      accordionContent.style.display = 'none';
+    } else {
+      document.querySelectorAll('.accordion-content').forEach(content => {
+        content.style.display = 'none'; // اغلق جميع الأقسام الأخرى
+      });
+      accordionContent.style.display = 'block'; // فتح القسم الحالي فقط
+    }
+  });
+});
+
 var canvas = new fabric.Canvas('imageCanvas');
 document.getElementById('imageLoader').addEventListener('change', function (e) {
     var reader = new FileReader();
@@ -652,17 +667,4 @@ document.getElementById('moveRight').onclick = function() { scrollCanvas(60, 0);
 function scrollCanvas(deltaX, deltaY) {
   window.scrollBy(deltaX, deltaY);
 }
-document.querySelectorAll('.accordion-header').forEach(button => {
-  button.addEventListener('click', () => {
-    const accordionContent = button.nextElementSibling;
 
-    if (accordionContent.style.display === 'block') {
-      accordionContent.style.display = 'none';
-    } else {
-      document.querySelectorAll('.accordion-content').forEach(content => {
-        content.style.display = 'none'; // اغلق جميع الأقسام الأخرى
-      });
-      accordionContent.style.display = 'block'; // فتح القسم الحالي فقط
-    }
-  });
-});
