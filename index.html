@@ -124,11 +124,24 @@ label {
 </head>
 <body>
     <h2>محرر الصور بسيط</h2>
-    <input type="file" id="imageLoader" name="imageLoader"/>
+<div class="accordion">
+  <h3 class="accordion-header"><i class="fas fa-image"></i>ADD Image and <i class="fas fa-crop"></i> Crop</h3>
+  <div class="accordion-content">
+
+<div class="group">
+    
+<input type="file" id="imageLoader" name="imageLoader"/>
 <button id="addLayerBtn">إضافة طبقة</button>
+<div id="imageContainer" style="max-width: 300px; max-height: 200px; margin: auto; overflow: hidden;">
+ <img id="imageToCrop" src="" style="display:none; max-width: 100%; max-height:200px"/>   
+<img id="image" style="display: none;"/>
 
+</div>
+<button id="cropImage"><i class="fas fa-crop"></i> Crop Background Image</button>
 <button id="confirmCrop" style="display:none;">تأكيد القص</button>
-
+</div>
+</div>
+</div>
 <div class="accordion">
   <h3 class="accordion-header"><i class="fas fa-expand"></i> Size</h3>
   <div class="accordion-content">
@@ -213,7 +226,7 @@ Color: <input type="color" id="color" value="#FFFFFF">
 
 <button id="exportImage"><i class="fas fa-download"></i></button>
 
-<button id="cropImage"><i class="fas fa-crop"></i></button>
+
 <button id="undo"><i class="fas fa-undo"></i></button>
 <button id="redo"><i class="fas fa-redo"></i></button>
 
@@ -227,11 +240,7 @@ Color: <input type="color" id="color" value="#FFFFFF">
 
 
 
-<div id="imageContainer" style="max-width: 300px; max-height: 200px; margin: auto; overflow: hidden;">
- <img id="imageToCrop" src="" style="display:none; max-width: 100%; max-height:200px"/>   
-<img id="image" style="display: none;"/>
 
-</div>
 
     <canvas id="imageCanvas" width="300" height="200"></canvas>
 
@@ -270,7 +279,7 @@ drawingModeEl.onclick = function() {
     if (canvas.isDrawingMode) {
         drawingModeEl.textContent = 'Cancel Drawing Mode';
     } else {
-        drawingModeEl.textContent = 'Toggle Drawing Mode';
+        drawingModeEl.textContent = 'Enable Drawing Mode';
     }
 };
 document.body.appendChild(drawingModeEl);
@@ -893,4 +902,4 @@ document.querySelectorAll('.accordion-header').forEach(button => {
 
 </script>
 </body>
-      </html>
+    </html>
