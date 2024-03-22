@@ -727,8 +727,8 @@ fabric.Object.prototype.controls.clone = new fabric.Control({
 fabric.Object.prototype.controls.deselectControl = new fabric.Control({
   x: -0.5,
   y: -0.5,
-  offsetY: -10,
-  offsetX: -24, // يمكنك تعديل هذه القيم لتغيير موقع الزر
+  offsetY: 24,
+  offsetX: 24, // يمكنك تعديل هذه القيم لتغيير موقع الزر
   cursorStyle: 'pointer',
   mouseUpHandler: function(eventData, transform) {
     var canvas = transform.target.canvas;
